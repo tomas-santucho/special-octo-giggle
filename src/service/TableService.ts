@@ -13,7 +13,7 @@ function getAuthHeader(): HeadersInit {
 
 
 export async function giveupTableById(tableId: number): Promise<void> {
-    const response = await fetch(`http://localhost:8080/api/tables/${tableId}/giveup`, {
+    const response = await fetch(`https://table-master.fly.dev/api/tables/${tableId}/giveup`, {
         method: "PUT",
         headers: getAuthHeader()
     });
@@ -23,7 +23,7 @@ export async function giveupTableById(tableId: number): Promise<void> {
 }
 
 export async function pickupTableById(tableId: number): Promise<void> {
-    const response = await fetch(`http://localhost:8080/api/tables/${tableId}/pickup`, {
+    const response = await fetch(`https://table-master.fly.dev/api/tables/${tableId}/pickup`, {
         method: "PUT",
         headers: getAuthHeader()
     });
@@ -33,7 +33,7 @@ export async function pickupTableById(tableId: number): Promise<void> {
 }
 
 export async function finishTable(tableId: number): Promise<void> {
-    const response = await fetch(`http://localhost:8080/api/tables/${tableId}/finish`, {
+    const response = await fetch(`https://table-master.fly.dev/api/tables/${tableId}/finish`, {
         method: "PUT",
         headers: getAuthHeader()
     });
@@ -44,7 +44,7 @@ export async function finishTable(tableId: number): Promise<void> {
 
 export async function fetchAllTables(): Promise<TableDto[]> {
     const headers = getAuthHeader();
-    const response = await fetch('http://localhost:8080/api/tables', {
+    const response = await fetch('https://table-master.fly.dev/api/tables', {
         method: "GET",
         headers: headers
     });
@@ -57,7 +57,7 @@ export async function fetchAllTables(): Promise<TableDto[]> {
 }
 
 export async function fetchMyTables(): Promise<TableDto[]> {
-    const response = await fetch('http://localhost:8080/api/tables/my', {
+    const response = await fetch('https://table-master.fly.dev/api/tables/my', {
         method: "GET",
         headers: getAuthHeader()
     });
@@ -68,7 +68,7 @@ export async function fetchMyTables(): Promise<TableDto[]> {
 }
 
 export async function fetchOpenTables(): Promise<TableDto[]> {
-    const response = await fetch('http://localhost:8080/api/tables/open', {
+    const response = await fetch('https://table-master.fly.dev/api/tables/open', {
         method: "GET",
         headers: getAuthHeader()
     });
@@ -79,7 +79,7 @@ export async function fetchOpenTables(): Promise<TableDto[]> {
 }
 
 export async function createTable(tableRequest: TableRequest): Promise<TableDto> {
-    const response = await fetch('http://localhost:8080/api/tables', {
+    const response = await fetch('https://table-master.fly.dev/api/tables', {
         method: "POST",
         headers: getAuthHeader(),
         body: JSON.stringify(tableRequest)
