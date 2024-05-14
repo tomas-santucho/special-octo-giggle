@@ -1,49 +1,47 @@
 <script lang="ts">
-
     import LoginRegister from "./lib/LoginRegister.svelte";
     import NewTable from "./lib/NewTable.svelte";
     import AllTables from "./lib/AllTables.svelte";
     import OpenTables from "./lib/OpenTables.svelte";
     import Tables from "./lib/Tables.svelte";
-    import {isLoggedIn} from "./Stores/stores";
+    import {isEditingTable, isLoggedIn, showAllTables, showNewTable, showOpenTables} from "./Stores/stores";
 
-    let showNewTable = false;
-    let showAllTables = false;
-    let showOpenTables = false;
+
 
     function handleNewTable() {
-        showNewTable = true;
-        showAllTables = false;
-        showOpenTables = false;
+        $isEditingTable = false
+        $showNewTable = true;
+        $showAllTables = false;
+        $showOpenTables = false;
     }
 
     function handleDashboard() {
-        showNewTable = false;
-        showAllTables = false;
-        showOpenTables = false;
+        $showNewTable = false;
+        $showAllTables = false;
+        $showOpenTables = false;
     }
 
     function handleViewAllTables() {
-        showNewTable = false;
-        showAllTables = true;
-        showOpenTables = false;
+        $showNewTable = false;
+        $showAllTables = true;
+        $showOpenTables = false;
     }
 
     function handleViewOpenTables() {
-        showNewTable = false;
-        showAllTables = false;
-        showOpenTables = true;
+        $showNewTable = false;
+        $showAllTables = false;
+        $showOpenTables = true;
     }
 </script>
 
 {#if !$isLoggedIn}
-    <LoginRegister/>
+    <LoginRegister />
 {:else}
-    {#if showNewTable}
+    {#if $showNewTable}
         <NewTable />
-    {:else if showAllTables}
+    {:else if $showAllTables}
         <AllTables />
-    {:else if showOpenTables}
+    {:else if $showOpenTables}
         <OpenTables />
     {:else}
         <Tables onNewTable={handleNewTable} onViewAllTables={handleViewAllTables} onViewOpenTables={handleViewOpenTables} />

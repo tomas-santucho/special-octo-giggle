@@ -79,6 +79,7 @@ export async function fetchOpenTables(): Promise<TableDto[]> {
 }
 
 export async function createTable(tableRequest: TableRequest): Promise<TableDto> {
+    console.error(tableRequest)
     const response = await fetch('https://table-master.fly.dev/api/tables', {
         method: "POST",
         headers: getAuthHeader(),
@@ -90,7 +91,23 @@ export async function createTable(tableRequest: TableRequest): Promise<TableDto>
     return await response.json() as Promise<TableDto>;
 }
 
+export async function updateTable(tableRequest: TableRequest): Promise<TableDto> {
+    const response = await fetch(`https://table-master.fly.dev/api/tables`, {
+        method: "PUT",
+        headers: getAuthHeader(),
+        body: JSON.stringify(tableRequest)
+    });
+    if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Failed to update table:', errorText);
+        throw new Error(`Failed to update table with ID ${tableRequest.id}: ${errorText}`);
+    }
+    return await response.json() as Promise<TableDto>;
+}
+
+
 export interface TableRequest {
+    id: string,
     guestName: string;
     amount: number;
     notes: string;

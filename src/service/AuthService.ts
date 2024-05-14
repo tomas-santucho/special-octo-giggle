@@ -1,4 +1,4 @@
-import { isLoggedIn } from "../Stores/stores";
+import {isLoggedIn, username} from "../Stores/stores";
 
 export interface RegisterRequest {
     name: string;
@@ -22,9 +22,9 @@ export async function login(authRequest: AuthRequest): Promise<boolean> {
         });
 
         if (response.ok) {
-            const authResponse = await response.json(); // Parse JSON response
+            const authResponse = await response.json();
             localStorage.setItem("jwt-token", authResponse.token);
-            localStorage.setItem("user-name", authResponse.name); // Store the user's name
+            username.set(authResponse.name);
             isLoggedIn.set(true);
             console.info("Logged in as", authResponse.name);
             return true;
@@ -49,9 +49,9 @@ export async function register(registerRequest: RegisterRequest): Promise<boolea
         });
 
         if (response.ok) {
-            const authResponse = await response.json(); // Parse JSON response
+            const authResponse = await response.json();
             localStorage.setItem("jwt-token", authResponse.token);
-            localStorage.setItem("user-name", authResponse.name); // Store the user's name
+            username.set(authResponse.name);
             isLoggedIn.set(true);
             console.info("Registered and logged in as", authResponse.name);
             return true;

@@ -1,9 +1,18 @@
 <!-- src/Tables.svelte -->
 <script lang="ts">
     import {fetchMyTables, finishTable, giveupTableById} from "../service/TableService";
-    import {username} from "../Stores/stores";
+    import {
+        editAmount, editId,
+        editName, editNotes,
+        isEditingTable,
+        showAllTables,
+        showNewTable,
+        showOpenTables,
+        username
+    } from "../Stores/stores";
 
     export let onNewTable;
+
     export let onViewAllTables;
     export let onViewOpenTables;
 
@@ -12,8 +21,16 @@
         window.location.href = '/dashboard';
     }
 
-    function edit(id) {
-        console.log(`Editando mesa con ID: ${id}`);
+    function edit(id, name, amount, notes) {
+        $showNewTable = true;
+        $showAllTables = false;
+        $showOpenTables = false;
+        $isEditingTable = true
+        $editName = name
+        $editAmount = amount
+        $editNotes = notes
+        $editId = id
+
     }
 
     async function giveUpTable(id) {
@@ -24,7 +41,7 @@
 </script>
 
 <div class="max-w-2xl mx-auto mt-8">
-    <h1 class="text-2xl font-semibold text-orange-500">Welcome back, {username}.</h1>
+    <h1 class="text-2xl font-semibold text-orange-500">Welcome back, {$username}.</h1>
     <h2 class="text-lg font-semibold mt-4">Your Tables</h2>
     <div class="overflow-x-auto mt-2">
         <table class="table table-zebra w-full">
@@ -46,7 +63,7 @@
                         <td>{table.arrivedAt}</td>
                         <td>
                             <button on:click={() => finished(table.id)} class="link text-blue-600">finished</button> |
-                            <button on:click={() => edit(table.id)} class="link text-blue-600">edit</button> |
+                            <button on:click={() => edit(table.id, table.guestName, table.amount, table.notes)} class="link text-blue-600">edit</button> |
                             <button on:click={() => giveUpTable(table.id)} class="link text-pink-600">Give Up Table</button>
                         </td>
                     </tr>

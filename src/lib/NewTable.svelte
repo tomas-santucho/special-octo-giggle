@@ -1,10 +1,20 @@
 <script lang="ts">
 
-    import {createTable} from "../service/TableService";
+    import {createTable, updateTable} from "../service/TableService";
+    import {editAmount, editId, editName, editNotes, isEditingTable} from "../Stores/stores";
 
-    let guestName = '';
-    let numGuests = '';
-    let notes = '';
+    export let guestName = '';
+    export let numGuests = '';
+    export let notes = '';
+
+    export let id = ''
+
+    if ($isEditingTable){
+        guestName = $editName
+        numGuests = $editAmount
+        notes = $editNotes
+        id = $editId
+    }
 
     let errorMessage = '';
 
@@ -12,7 +22,6 @@
         errorMessage = '';
         const amount = parseInt(numGuests, 10);
 
-        // Validaciones
         if (guestName.length < 2) {
             errorMessage = 'Guest name must be at least 2 letters';
             return;
@@ -23,8 +32,13 @@
             return;
         }
 
-        console.log('Enviando:', { guestName, amount, notes });
-        await createTable( { guestName, amount, notes })
+        console.log('Enviando:', {id, guestName, amount, notes });
+        if (!$isEditingTable){
+            await createTable( {id, guestName, amount, notes })
+        }else{
+            await updateTable ({id, guestName, amount, notes })
+        }
+
 
 
 
@@ -37,7 +51,12 @@
 </script>
 
 <div class="max-w-xl mx-auto mt-8">
-    <h1 class="text-3xl font-semibold">New Table</h1>
+    {#if !$isEditingTable}
+        <h1 class="text-3xl font-semibold">New Table</h1>
+    {:else}
+        <h1 class="text-3xl font-semibold">Edit table</h1>
+    {/if}
+
     {#if errorMessage}
         <p class="text-red-500 mt-2">{errorMessage}</p>
     {/if}
@@ -56,7 +75,13 @@
         </div>
         <div class="flex space-x-4 mt-4">
             <button on:click={cancel} class="btn">Cancel</button>
-            <button on:click={validateAndSubmit} class="btn btn-primary">Submit</button>
+            <button on:click={validateAndSubmit} class="btn btn-primary">
+                {#if !$isEditingTable}
+                    Submit
+                {:else}
+                    Edit
+                {/if}
+            </button>
         </div>
     </div>
 </div>
